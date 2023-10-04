@@ -3,6 +3,7 @@ import{ Route,Switch,HashRouter}from 'react-router-dom'
 import Login from "../views/login";
 import CadastroUsuario from "../views/cadastroUsuario";
 
+
 function Rotas(){
     return(
         <HashRouter>
