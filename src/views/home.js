@@ -1,10 +1,29 @@
 import React from "react";
-
+import usuarioService from "../App/service/usuarioService";
+import localStorageService from "../App/service/localstorage";
 class Home extends React.Component{
 
     state={
         saldo:0
     }
+
+    constructor(){
+        super()
+        this.usuarioService=new usuarioService();
+    }
+
+    componentDidMount(){
+         const usuarioLogado = localStorageService.obterItem('_usuario_logado')
+       
+       this.usuarioService
+        .obterSaldoPorUsuario(usuarioLogado.id)
+        .then(response=>{
+            this.setState({saldo: response.data})
+        }).catch(error=>{
+            console.error(error.response)
+        })
+    }
+
     render() {
         return(
             <div className="jumbotron">
@@ -15,7 +34,7 @@ class Home extends React.Component{
                     <p>E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.</p>
                     <p className="lead">
                         <a className="btn btn-primary btn-lg" href="#/cadastro-usuarios" role="button"><i className="fa fa-users"></i>  Cadastrar Usuário</a>
-                        <a className="btn btn-danger btn-lg" href="https://bootswatch.com/flatly/#" role="button"><i class="fa fa-users"></i>  Cadastrar Lançamento</a>
+                        <a className="btn btn-danger btn-lg" href="https://bootswatch.com/flatly/#" role="button"><i className="fa fa-users"></i>  Cadastrar Lançamento</a>
                     </p>
             </div>
         )
