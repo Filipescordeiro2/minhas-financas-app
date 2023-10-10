@@ -5,6 +5,8 @@ import NavBar from '../componets/navBar'
 import '../custom.css'
 import 'toastr/build/toastr.css'
 import 'toastr/build/toastr.min.js'
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+
 
 class App extends React.Component{
   render(){
