@@ -23,7 +23,6 @@ class Login extends React.Component{
         email: this.state.email,
         senha: this.state.senha
      }).then(response =>{
-        localStorageService.adicioanarItem('_usuario_logado',response.data)
          this.context.iniciarSessao(response.data)
         this.props.history.push('/home')
      }).catch(erro => {

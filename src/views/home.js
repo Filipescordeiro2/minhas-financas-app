@@ -1,6 +1,5 @@
 import React from "react";
 import usuarioService from "../App/service/usuarioService";
-import localStorageService from "../App/service/localstorage";
 import {AuthContext} from "../main/provedorDeAutenticacao";
 
 class Home extends React.Component{
@@ -43,6 +42,6 @@ class Home extends React.Component{
         )
     }
 }
-Home.contextType=AuthContext;
+Home.contextType=AuthContext
 
 export default Home
