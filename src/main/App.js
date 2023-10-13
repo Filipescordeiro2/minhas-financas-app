@@ -6,17 +6,17 @@ import '../custom.css'
 import 'toastr/build/toastr.css'
 import 'toastr/build/toastr.min.js'
 import "primereact/resources/themes/lara-light-indigo/theme.css";
-
+import ProvedorDeAutenticacao from "./provedorDeAutenticacao";
 
 class App extends React.Component{
   render(){
     return(
-      <>
+      <ProvedorDeAutenticacao>
       <NavBar/>
     <div className='container'>
     <Rotas/>
     </div>
-    </>
+      </ProvedorDeAutenticacao>
     )
   }
 }

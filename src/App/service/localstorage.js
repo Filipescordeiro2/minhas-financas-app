@@ -8,5 +8,7 @@ class localStorageService{
 
         return JSON.parse(item)
     }
-
+      static removerItem(chave){
+        localStorage.removeItem(chave)
+      }
 }export default localStorageService

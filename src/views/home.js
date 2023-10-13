@@ -1,6 +1,8 @@
 import React from "react";
 import usuarioService from "../App/service/usuarioService";
 import localStorageService from "../App/service/localstorage";
+import {AuthContext} from "../main/provedorDeAutenticacao";
+
 class Home extends React.Component{
 
     state={
@@ -13,7 +15,7 @@ class Home extends React.Component{
     }
 
     componentDidMount(){
-         const usuarioLogado = localStorageService.obterItem('_usuario_logado')
+         const usuarioLogado = this.context.usuarioAutenticado;
        
        this.usuarioService
         .obterSaldoPorUsuario(usuarioLogado.id)
@@ -33,12 +35,14 @@ class Home extends React.Component{
                 <hr className="my-4"/>
                     <p>E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.</p>
                     <p className="lead">
-                        <a className="btn btn-primary btn-lg" href="#/cadastro-usuarios" role="button"><i className="fa fa-users"></i>  Cadastrar Usuário</a>
-                        <a className="btn btn-danger btn-lg" href="#/cadastro-lancamentos" role="button"><i className="fa fa-users"></i>  Cadastrar Lançamento</a>
+                        <a className="btn btn-primary btn-lg" href="#/cadastro-usuarios" role="button"><i
+                            className="pi pi-users"></i>  Cadastrar Usuário</a>
+                        <a className="btn btn-danger btn-lg" href="#/cadastro-lancamentos" role="button"><i className="pi pi-money-bill"></i>  Cadastrar Lançamento</a>
                     </p>
             </div>
         )
     }
 }
+Home.contextType=AuthContext;
 
 export default Home

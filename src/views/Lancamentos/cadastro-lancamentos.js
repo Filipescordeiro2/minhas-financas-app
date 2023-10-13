@@ -17,13 +17,28 @@ class CadastroLancamentos extends React.Component{
         mes:'',
         ano:'',
         tipo:'',
-        status:''
+        status:'',
+        usuario:null,
+        atualizando:false
 
     }
     constructor() {
         super();
         this.service=new LancamentoService();
     }
+
+    componentDidMount() {
+        const params=this.props.match.params;
+        if (params.id){
+            this.service.obterPorId(params.id)
+                .then(response =>{
+                    this.setState({...response.data,atualizando:true})
+                }).catch(erros =>{
+                    messages.mensagemErro(erros.response.data)
+            })
+        }
+    }
+
     subimit =() =>{
         const usuarioLogado = localStorageService.obterItem('_usuario_logado');
 
@@ -31,14 +46,39 @@ class CadastroLancamentos extends React.Component{
 
         const lancamento ={descricao,valor,mes,ano,tipo,usuario:usuarioLogado.id}
 
+        try {
+            this.service.validar(lancamento)
+
+        }catch (erro){
+          const mensagens = erro.mensagens;
+          mensagens.forEach(msg=>messages.mensagemErro(msg));
+          return false;
+        }
+
        this.service.salvar(lancamento)
            .then(response=>{
                this.props.history.push('/consulta-lancamentos')
-             messages.mensagemSucesso('lancamentoCadatrado com Sucesso')
+             messages.mensagemSucesso('lancamento Cadatrado com Sucesso')
            }).catch(error =>{
                messages.mensagemErro(error.response.data)
        })
     }
+    atualizar=()=>{
+
+        const{descricao,valor,mes,ano,tipo,status,id,usuario} = this.state;
+
+        const lancamento ={descricao,valor,mes,ano,tipo,status,id,usuario}
+
+        this.service.atualizar(lancamento)
+            .then(response=>{
+                this.props.history.push('/consulta-lancamentos')
+                messages.mensagemSucesso('lancamento Atualizado com Sucesso')
+            }).catch(error =>{
+            messages.mensagemErro(error.response.data)
+        })
+
+    }
+
     handleChange = (event)=>{
         const value=event.target.value;
         const name =event.target.name;
@@ -50,7 +90,7 @@ class CadastroLancamentos extends React.Component{
         const  meses = this.service.obterListaMeses();
 
         return(
-            <Card title="Cadastro de Lancamento">
+            <Card title={this.state.atualizando? 'Atualização de lancamento':'Cadastro de Lancamento'}>
                 <div className="row">
                     <div className="col-md-12">
                     <FormGroup id="inputDescricao" label="Descrição: *">
@@ -98,10 +138,15 @@ class CadastroLancamentos extends React.Component{
                 <br/>
                 <div className="row">
                     <div className="col-md-6">
-
-                <button onClick={this.subimit} className="btn btn-success">Salvar</button>
-                <button onClick={e=> this.props.history.push('/consulta-lancamentos')} className="btn btn-danger">Cancelar</button>
-
+                        {
+                            this.state.atualizando?
+                                (
+                                    <button onClick={this.atualizar} className="btn btn-success"><i className="pi pi-refresh"></i>  Atualizar</button>
+                                ) :(
+                                    <button onClick={this.subimit} className="btn btn-success"><i className="pi pi-save"></i>  Salvar</button>
+                                )
+                        }
+                        <button onClick={e=> this.props.history.push('/consulta-lancamentos')} className="btn btn-danger"><i className="pi pi-times-circle"></i>  Cancelar</button>
                     </div>
                 </div>
             </Card>
